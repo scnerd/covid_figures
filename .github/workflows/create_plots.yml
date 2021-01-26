@@ -28,22 +28,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v1
       
-      - run: pip install -r requirements.txt
-      - run: echo "{}" > junk.json
-
-      - uses: yaananth/run-notebook@v1
-        env:
-          RUNNER: ${{ toJson(runner) }}
-          SECRETS: ${{ toJson(secrets) }}
-          GITHUB: ${{ toJson(github) }}
-        with:
-          notebook: "Normalized Deaths.ipynb"
-          params: "junk.json"
-          isReport: True
+      - run: |
+          pip install -r requirements.txt
+          jupyter nbconvert --execute "Normalized Deaths.ipynb"
+          
       - uses: actions/upload-artifact@master
         if: always()
         with:
           name: output
-          path: ${{ RUNNER.temp }}/nb-runner
-        env:
-          RUNNER: ${{ toJson(runner) }}
+          path: normalized_deaths.html
