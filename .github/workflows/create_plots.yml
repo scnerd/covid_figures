@@ -27,6 +27,9 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@v1
+      
+      - run: pip install -r requirements.txt
+      - run: echo "{}" > junk.json
 
       - uses: yaananth/run-notebook@v1
         env:
@@ -35,8 +38,8 @@ jobs:
           GITHUB: ${{ toJson(github) }}
         with:
           notebook: "Normalized Deaths.ipynb"
+          params: "junk.json"
           isReport: True
-          poll: True
       - uses: actions/upload-artifact@master
         if: always()
         with:
