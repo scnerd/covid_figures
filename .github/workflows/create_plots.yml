@@ -29,10 +29,17 @@ jobs:
         uses: actions/setup-python@v1
       
       - run: pip install -r requirements.txt
-      - run: jupyter nbconvert --execute --to notebook --inplace "Normalized Deaths.ipynb"
+      - run: |
+          jupyter nbconvert --execute --to notebook --inplace "Normalized Deaths.ipynb"
+          mkdir public
+          mv normalized_deaths.html public/
           
-      - uses: actions/upload-artifact@master
-        if: always()
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
         with:
-          name: output
-          path: normalized_deaths.html
+          target_branch: gh-pages
+          build_dir: public
+          jekyll: False
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
