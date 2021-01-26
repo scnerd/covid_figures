@@ -28,9 +28,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v1
       
-      - run: |
-          pip install -r requirements.txt
-          jupyter nbconvert --execute "Normalized Deaths.ipynb"
+      - run: pip install -r requirements.txt
+      - run: jupyter nbconvert --execute --to notebook --inplace "Normalized Deaths.ipynb"
           
       - uses: actions/upload-artifact@master
         if: always()
